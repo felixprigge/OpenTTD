@@ -182,7 +182,7 @@ static void UpdateConsists(int32_t)
 {
 	for (Train *t : Train::Iterate()) {
 		/* Update the consist of all trains so the maximum speed is set correctly. */
-		if (t->IsFrontEngine() || t->IsFreeWagon()) t->ConsistChanged(CCF_TRACK);
+		if (t->IsFirstEngine() || t->IsFreeWagon()) t->ConsistChanged(CCF_TRACK);
 	}
 	InvalidateWindowClassesData(WC_BUILD_VEHICLE, 0);
 }
@@ -311,7 +311,7 @@ static std::tuple<int32_t, uint32_t> GetServiceIntervalRange(const IntSettingDes
 static void TrainAccelerationModelChanged(int32_t)
 {
 	for (Train *t : Train::Iterate()) {
-		if (t->IsFrontEngine()) {
+		if (t->IsFirstEngine()) {
 			t->tcache.cached_max_curve_speed = t->GetCurveSpeedLimit();
 			t->UpdateAcceleration();
 		}
@@ -329,7 +329,7 @@ static void TrainAccelerationModelChanged(int32_t)
 static void TrainSlopeSteepnessChanged(int32_t)
 {
 	for (Train *t : Train::Iterate()) {
-		if (t->IsFrontEngine()) t->CargoChanged();
+		if (t->IsFirstEngine()) t->CargoChanged();
 	}
 }
 
@@ -340,7 +340,7 @@ static void RoadVehAccelerationModelChanged(int32_t)
 {
 	if (_settings_game.vehicle.roadveh_acceleration_model != AM_ORIGINAL) {
 		for (RoadVehicle *rv : RoadVehicle::Iterate()) {
-			if (rv->IsFrontEngine()) {
+			if (rv->IsFirstEngine()) {
 				rv->CargoChanged();
 			}
 		}
@@ -358,7 +358,7 @@ static void RoadVehAccelerationModelChanged(int32_t)
 static void RoadVehSlopeSteepnessChanged(int32_t)
 {
 	for (RoadVehicle *rv : RoadVehicle::Iterate()) {
-		if (rv->IsFrontEngine()) rv->CargoChanged();
+		if (rv->IsFirstEngine()) rv->CargoChanged();
 	}
 }
 

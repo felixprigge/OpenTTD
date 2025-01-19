@@ -743,8 +743,8 @@ CommandCost CmdAutoreplaceVehicle(DoCommandFlag flags, VehicleID veh_id)
 	if (v->type == VEH_TRAIN) {
 		Train *t = Train::From(v);
 		if (t->IsArticulatedPart() || t->IsRearDualheaded()) return CMD_ERROR;
-		free_wagon = !t->IsFrontEngine();
-		if (free_wagon && t->First()->IsFrontEngine()) return CMD_ERROR;
+		free_wagon = !t->IsFirstEngine();
+		if (free_wagon && t->First()->IsFirstEngine()) return CMD_ERROR;
 	} else {
 		if (!v->IsPrimaryVehicle()) return CMD_ERROR;
 	}

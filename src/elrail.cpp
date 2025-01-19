@@ -633,7 +633,7 @@ void UpdateDisableElrailSettingState(bool disable, bool update_vehicles)
 	if (update_vehicles) {
 		for (Train *t : Train::Iterate()) {
 			/* power and acceleration is cached only for front engines */
-			if (t->IsFrontEngine()) {
+			if (t->IsFirstEngine()) {
 				t->ConsistChanged(CCF_TRACK);
 			}
 		}

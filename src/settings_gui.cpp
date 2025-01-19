@@ -2133,6 +2133,7 @@ static SettingsContainer &GetSettingsTree()
 			{
 				routing->Add(new SettingEntry("vehicle.road_side"));
 				routing->Add(new SettingEntry("difficulty.line_reverse_mode"));
+				routing->Add(new SettingEntry("difficulty.enable_train_reverse"));
 				routing->Add(new SettingEntry("pf.reverse_at_signals"));
 				routing->Add(new SettingEntry("pf.forbid_90_deg"));
 			}

@@ -718,7 +718,7 @@ bool Vehicle::IsEngineCountable() const
 		case VEH_TRAIN:
 			return !this->IsArticulatedPart() && // tenders and other articulated parts
 					!Train::From(this)->IsRearDualheaded(); // rear parts of multiheaded engines
-		case VEH_ROAD: return RoadVehicle::From(this)->IsFrontEngine();
+		case VEH_ROAD: return RoadVehicle::From(this)->IsFirstEngine();
 		case VEH_SHIP: return true;
 		default: return false; // Only count company buildable vehicles
 	}
@@ -1043,7 +1043,7 @@ void CallVehicleTicks()
 						break;
 
 					case VEH_ROAD:
-						if (!RoadVehicle::From(v)->IsFrontEngine()) continue;
+						if (!RoadVehicle::From(v)->IsFirstEngine()) continue;
 						break;
 
 					case VEH_AIRCRAFT:
@@ -2810,7 +2810,7 @@ void Vehicle::ShowVisualEffect() const
 		 * - is entering a station with an order to stop there and its speed is equal to maximum station entering speed
 		 */
 		if (HasBit(t->flags, VRF_REVERSING) ||
-				(IsRailStationTile(t->tile) && t->IsFrontEngine() && t->current_order.ShouldStopAtStation(t, GetStationIndex(t->tile)) &&
+				(IsRailStationTile(t->tile) && t->IsFirstEngine() && t->current_order.ShouldStopAtStation(t, GetStationIndex(t->tile)) &&
 				t->cur_speed >= max_speed)) {
 			return;
 		}

@@ -3708,7 +3708,7 @@ static VehicleEnterTileStatus VehicleEnter_Station(Vehicle *v, TileIndex tile, i
 	if (v->type == VEH_TRAIN) {
 		StationID station_id = GetStationIndex(tile);
 		if (!v->current_order.ShouldStopAtStation(v, station_id)) return VETSB_CONTINUE;
-		if (!IsRailStation(tile) || !v->IsFrontEngine()) return VETSB_CONTINUE;
+		if (!IsRailStation(tile) || !v->IsFirstEngine()) return VETSB_CONTINUE;
 
 		int station_ahead;
 		int station_length;
@@ -3741,7 +3741,7 @@ static VehicleEnterTileStatus VehicleEnter_Station(Vehicle *v, TileIndex tile, i
 	} else if (v->type == VEH_ROAD) {
 		RoadVehicle *rv = RoadVehicle::From(v);
 		if (rv->state < RVSB_IN_ROAD_STOP && !IsReversingRoadTrackdir((Trackdir)rv->state) && rv->frame == 0) {
-			if (IsStationRoadStop(tile) && rv->IsFrontEngine()) {
+			if (IsStationRoadStop(tile) && rv->IsFirstEngine()) {
 				/* Attempt to allocate a parking bay in a road stop */
 				return RoadStop::GetByTile(tile, GetRoadStopType(tile))->Enter(rv) ? VETSB_CONTINUE : VETSB_CANNOT_ENTER;
 			}

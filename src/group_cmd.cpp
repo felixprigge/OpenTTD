@@ -285,7 +285,7 @@ static void PropagateChildLivery(const Group *g, bool reset_cache)
 	if (reset_cache) {
 		/* Company colour data is indirectly cached. */
 		for (Vehicle *v : Vehicle::Iterate()) {
-			if (v->group_id == g->index && (!v->IsGroundVehicle() || v->IsFrontEngine())) {
+			if (v->group_id == g->index && (!v->IsGroundVehicle() || v->IsFirstEngine())) {
 				for (Vehicle *u = v; u != nullptr; u = u->Next()) {
 					u->colourmap = PAL_NONE;
 					u->InvalidateNewGRFCache();
@@ -746,7 +746,7 @@ void SetTrainGroupID(Train *v, GroupID new_g)
 {
 	if (!Group::IsValidID(new_g) && !IsDefaultGroupID(new_g)) return;
 
-	assert(v->IsFrontEngine() || IsDefaultGroupID(new_g));
+	assert(v->IsFirstEngine() || IsDefaultGroupID(new_g));
 
 	for (Vehicle *u = v; u != nullptr; u = u->Next()) {
 		if (u->IsEngineCountable()) UpdateNumEngineGroup(u, u->group_id, new_g);
@@ -772,9 +772,9 @@ void SetTrainGroupID(Train *v, GroupID new_g)
  */
 void UpdateTrainGroupID(Train *v)
 {
-	assert(v->IsFrontEngine() || v->IsFreeWagon());
+	assert(v->IsFirstEngine() || v->IsFreeWagon());
 
-	GroupID new_g = v->IsFrontEngine() ? v->group_id : (GroupID)DEFAULT_GROUP;
+	GroupID new_g = v->IsFirstEngine() ? v->group_id : (GroupID)DEFAULT_GROUP;
 	for (Vehicle *u = v; u != nullptr; u = u->Next()) {
 		if (u->IsEngineCountable()) UpdateNumEngineGroup(u, u->group_id, new_g);
 

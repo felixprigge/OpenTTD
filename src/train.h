@@ -28,7 +28,7 @@ enum VehicleRailFlags {
 	VRF_REVERSE_DIRECTION             = 4, ///< Reverse the visible direction of the vehicle.
 
 	VRF_EL_ENGINE_ALLOWED_NORMAL_RAIL = 6, ///< Electric train engine is allowed to run on normal rail. */
-	VRF_TOGGLE_REVERSE                = 7, ///< Used for vehicle var 0xFE bit 8 (toggled each time the train is reversed, accurate for first vehicle only).
+	VRF_TOGGLE_REVERSE                = 7, ///< Used for vehicle var 0xFE bit 8 (toggled each time the train is reversed).
 	VRF_TRAIN_STUCK                   = 8, ///< Train can't get a path reservation.
 	VRF_LEAVING_STATION               = 9, ///< Train is just leaving a station.
 };
@@ -113,7 +113,7 @@ struct Train final : public GroundVehicle<Train, VEH_TRAIN> {
 	void UpdateDeltaXY() override;
 	ExpensesType GetExpenseType(bool income) const override { return income ? EXPENSES_TRAIN_REVENUE : EXPENSES_TRAIN_RUN; }
 	void PlayLeaveStationSound(bool force = false) const override;
-	bool IsPrimaryVehicle() const override { return this->IsFrontEngine(); }
+	bool IsPrimaryVehicle() const override { return this->IsFirstEngine(); }
 	void GetImage(Direction direction, EngineImageType image_type, VehicleSpriteSeq *result) const override;
 	int GetDisplaySpeed() const override { return this->gcache.last_speed; }
 	int GetDisplayMaxSpeed() const override { return this->vcache.cached_max_speed; }
@@ -163,6 +163,54 @@ struct Train final : public GroundVehicle<Train, VEH_TRAIN> {
 		if (v != nullptr && v->IsRearDualheaded()) v = v->GetPrevVehicle();
 
 		return v;
+	}
+
+	/**
+	 * Get the front vehicle of a consist in driving direction.
+	 * @return front vehicle in driving direction.
+	 */
+	inline Train *Front()
+	{
+		if (HasBit(this->First()->flags, VRF_TOGGLE_REVERSE) && _settings_newgame.difficulty.enable_train_reverse) {
+			return this->Last();
+		} else {
+			return this->First();
+		}
+	}
+
+	inline const Train *Front() const
+	{
+		if (HasBit(this->First()->flags, VRF_TOGGLE_REVERSE) && _settings_newgame.difficulty.enable_train_reverse) {
+			return this->Last();
+		} else {
+			return this->First();
+		}
+	}
+	/**
+	 * Get the vehicle ahead of the current in driving direction.
+	 * @return vehicle ahead in driving direction.
+	 */
+
+	inline Train *Ahead()
+	{
+		if (HasBit(this->flags, VRF_TOGGLE_REVERSE) && _settings_newgame.difficulty.enable_train_reverse) {
+			return this->Next();
+		} else {
+			return this->Previous();
+		}
+	}
+
+	/**
+	 * Get the vehicle behind the current in driving direction.
+	 * @return vehicle behind in driving direction.
+	 */
+	inline Train *Behind()
+	{
+		if (HasBit(this->flags, VRF_TOGGLE_REVERSE) && _settings_newgame.difficulty.enable_train_reverse) {
+			return this->Previous();
+		} else {
+			return this->Next();
+		}
 	}
 
 	/**

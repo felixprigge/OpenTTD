@@ -113,10 +113,10 @@ enum VisualEffectSpawnModel {
  * Do not access it directly unless you have to. Use the subtype access functions.
  */
 enum GroundVehicleSubtypeFlags {
-	GVSF_FRONT            = 0, ///< Leading engine of a consist.
+	GVSF_FIRST            = 0, ///< First engine of a consist.
 	GVSF_ARTICULATED_PART = 1, ///< Articulated part of an engine.
 	GVSF_WAGON            = 2, ///< Wagon (not used for road vehicles).
-	GVSF_ENGINE           = 3, ///< Engine that can be front engine, but might be placed behind another engine (not used for road vehicles).
+	GVSF_ENGINE           = 3, ///< Engine that can be first engine, but might be placed behind another engine (not used for road vehicles).
 	GVSF_FREE_WAGON       = 4, ///< First in a wagon chain (in depot) (not used for road vehicles).
 	GVSF_MULTIHEADED      = 5, ///< Engine is multiheaded (not used for road vehicles).
 };
@@ -939,12 +939,12 @@ public:
 	void HandlePathfindingResult(bool path_found);
 
 	/**
-	 * Check if the vehicle is a front engine.
-	 * @return Returns true if the vehicle is a front engine.
+	 * Check if the vehicle is an engine and is the first unit.
+	 * @return Returns true if the vehicle is first engine.
 	 */
-	debug_inline bool IsFrontEngine() const
+	debug_inline bool IsFirstEngine() const
 	{
-		return this->IsGroundVehicle() && HasBit(this->subtype, GVSF_FRONT);
+		return this->IsGroundVehicle() && HasBit(this->subtype, GVSF_FIRST);
 	}
 
 	/**

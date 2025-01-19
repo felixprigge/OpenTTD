@@ -1319,6 +1319,9 @@ STR_CONFIG_SETTING_RECESSIONS_HELPTEXT                          :If enabled, rec
 STR_CONFIG_SETTING_TRAIN_REVERSING                              :Disallow train reversing in stations: {STRING2}
 STR_CONFIG_SETTING_TRAIN_REVERSING_HELPTEXT                     :If enabled, trains will not reverse in non-terminus stations, even if there is a shorter path to their next destination when reversing
 
+STR_CONFIG_SETTING_TRAIN_REVERSE_BEHAVIOR                       :Disallow trains to turn around on the spot: {STRING2}
+STR_CONFIG_SETTING_TRAIN_REVERSE_BEHAVIOR_HELPTEXT              :Behavior of reversing trains. Disable for original behavior, where the whole train turns around on the spot. Enable to forbid the flipping and enable the train to drive in the opposite direction. If there is no engine at the back of the train, the train backs up at slow speed. 
+
 STR_CONFIG_SETTING_DISASTERS                                    :Disasters: {STRING2}
 STR_CONFIG_SETTING_DISASTERS_HELPTEXT                           :Toggle disasters which may occasionally block or destroy vehicles or infrastructure
 

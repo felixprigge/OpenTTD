@@ -2723,7 +2723,7 @@ int WhoCanServiceIndustry(Industry *ind)
 		/* Check whether it accepts the right kind of cargo */
 		bool c_accepts = false;
 		bool c_produces = false;
-		if (v->type == VEH_TRAIN && v->IsFrontEngine()) {
+		if (v->type == VEH_TRAIN && v->IsFirstEngine()) {
 			for (const Vehicle *u = v; u != nullptr; u = u->Next()) {
 				CanCargoServiceIndustry(u->cargo_type, ind, &c_accepts, &c_produces);
 			}

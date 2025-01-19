@@ -39,7 +39,7 @@ void ConnectMultiheadedTrains()
 	}
 
 	for (Train *v : Train::Iterate()) {
-		if (v->IsFrontEngine() || v->IsFreeWagon()) {
+		if (v->IsFirstEngine() || v->IsFreeWagon()) {
 			/* Two ways to associate multiheaded parts to each other:
 			 * sequential-matching: Trains shall be arranged to look like <..>..<..>..<..>..
 			 * bracket-matching:    Free vehicle chains shall be arranged to look like ..<..<..>..<..>..>..
@@ -53,7 +53,7 @@ void ConnectMultiheadedTrains()
 			 *   This is why two matching strategies are needed.
 			 */
 
-			bool sequential_matching = v->IsFrontEngine();
+			bool sequential_matching = v->IsFirstEngine();
 
 			for (Train *u = v; u != nullptr; u = u->GetNextVehicle()) {
 				if (u->other_multiheaded_part != nullptr) continue; // we already linked this one
@@ -123,7 +123,7 @@ void ConvertOldMultiheadToNew()
 				switch (u->subtype) {
 					case 0: // TS_Front_Engine
 						if (rvi->railveh_type == RAILVEH_MULTIHEAD) u->SetMultiheaded();
-						u->SetFrontEngine();
+						u->SetFirstEngine();
 						u->SetEngine();
 						break;
 
@@ -332,7 +332,7 @@ void AfterLoadVehiclesPhase1(bool part_of_load)
 			for (RoadVehicle *rv : RoadVehicle::Iterate()) {
 				if (rv->subtype == 0) {
 					/* The road vehicle is at the front. */
-					rv->SetFrontEngine();
+					rv->SetFirstEngine();
 				} else if (rv->subtype == 1) {
 					/* The road vehicle is an articulated part. */
 					rv->subtype = 0;
@@ -422,7 +422,7 @@ void AfterLoadVehiclesPhase2(bool part_of_load)
 		switch (v->type) {
 			case VEH_TRAIN: {
 				Train *t = Train::From(v);
-				if (t->IsFrontEngine() || t->IsFreeWagon()) {
+				if (t->IsFirstEngine() || t->IsFreeWagon()) {
 					t->gcache.last_speed = t->cur_speed; // update displayed train speed
 					t->ConsistChanged(CCF_SAVELOAD);
 				}
@@ -431,7 +431,7 @@ void AfterLoadVehiclesPhase2(bool part_of_load)
 
 			case VEH_ROAD: {
 				RoadVehicle *rv = RoadVehicle::From(v);
-				if (rv->IsFrontEngine()) {
+				if (rv->IsFirstEngine()) {
 					rv->gcache.last_speed = rv->cur_speed; // update displayed road vehicle speed
 
 					rv->roadtype = Engine::Get(rv->engine_type)->u.road.roadtype;
@@ -464,7 +464,7 @@ void AfterLoadVehiclesPhase2(bool part_of_load)
 		for (Vehicle *v : Vehicle::Iterate()) {
 			if (v->type == VEH_TRAIN) {
 				Train *t = Train::From(v);
-				if (!t->IsFrontEngine()) {
+				if (!t->IsFirstEngine()) {
 					if (t->IsEngine()) t->vehstatus |= VS_STOPPED;
 					/* cur_speed is now relevant for non-front parts - nonzero breaks
 					 * moving-wagons-inside-depot- and autoreplace- code */
@@ -513,7 +513,7 @@ void AfterLoadVehiclesPhase2(bool part_of_load)
 				auto *dv = DisasterVehicle::From(v);
 				if (dv->subtype == ST_SMALL_UFO && dv->state != 0) {
 					RoadVehicle *u = RoadVehicle::GetIfValid(v->dest_tile.base());
-					if (u != nullptr && u->IsFrontEngine()) {
+					if (u != nullptr && u->IsFirstEngine()) {
 						/* Delete UFO targetting a vehicle which is already a target. */
 						if (u->disaster_vehicle != INVALID_VEHICLE && u->disaster_vehicle != dv->index) {
 							delete v;
@@ -567,7 +567,7 @@ void FixupTrainLengths()
 					if (!TrainController(u, next, false)) break;
 				}
 
-				if (next != nullptr && done < diff && u->IsFrontEngine()) {
+				if (next != nullptr && done < diff && u->IsFirstEngine()) {
 					/* Pulling the front vehicle forwards failed, we either encountered a dead-end
 					 * or a red signal. To fix this, we try to move the whole train the required
 					 * space backwards and re-do the fix up of the front vehicle. */

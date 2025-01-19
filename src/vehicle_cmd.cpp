@@ -845,7 +845,7 @@ std::tuple<CommandCost, VehicleID> CmdCloneVehicle(DoCommandFlag flags, TileInde
 	CommandCost ret = CheckOwnership(v->owner);
 	if (ret.Failed()) return { ret, INVALID_VEHICLE };
 
-	if (v->type == VEH_TRAIN && (!v->IsFrontEngine() || Train::From(v)->crash_anim_pos >= 4400)) return { CMD_ERROR, INVALID_VEHICLE };
+	if (v->type == VEH_TRAIN && (!v->IsFirstEngine() || Train::From(v)->crash_anim_pos >= 4400)) return { CMD_ERROR, INVALID_VEHICLE };
 
 	/* check that we can allocate enough vehicles */
 	if (!(flags & DC_EXEC)) {
@@ -895,7 +895,7 @@ std::tuple<CommandCost, VehicleID> CmdCloneVehicle(DoCommandFlag flags, TileInde
 				SetBit(Train::From(w)->flags, VRF_REVERSE_DIRECTION);
 			}
 
-			if (v->type == VEH_TRAIN && !v->IsFrontEngine()) {
+			if (v->type == VEH_TRAIN && !v->IsFirstEngine()) {
 				/* this s a train car
 				 * add this unit to the end of the train */
 				CommandCost result = Command<CMD_MOVE_RAIL_VEHICLE>::Do(flags, w->index, w_rear->index, true);

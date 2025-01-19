@@ -291,7 +291,7 @@ static void InitializeWindowsAndCaches()
 		}
 	}
 	for (RoadVehicle *rv : RoadVehicle::Iterate()) {
-		if (rv->IsFrontEngine()) {
+		if (rv->IsFirstEngine()) {
 			rv->CargoChanged();
 		}
 	}
@@ -1635,7 +1635,7 @@ bool AfterLoadGame()
 	if (IsSavegameVersionBefore(SLV_57)) {
 		/* Added a FIFO queue of vehicles loading at stations */
 		for (Vehicle *v : Vehicle::Iterate()) {
-			if ((v->type != VEH_TRAIN || Train::From(v)->IsFrontEngine()) &&  // for all locs
+			if ((v->type != VEH_TRAIN || Train::From(v)->IsFirstEngine()) &&  // for all locs
 					!(v->vehstatus & (VS_STOPPED | VS_CRASHED)) && // not stopped or crashed
 					v->current_order.IsType(OT_LOADING)) {         // loading
 				Station::Get(v->last_station_visited)->loading_vehicles.push_back(v);
@@ -2184,7 +2184,7 @@ bool AfterLoadGame()
 		for (DisasterVehicle *v : DisasterVehicle::Iterate()) {
 			if (v->subtype == 2 /* ST_SMALL_UFO */ && v->state != 0) {
 				const Vehicle *u = Vehicle::GetIfValid(v->dest_tile.base());
-				if (u == nullptr || u->type != VEH_ROAD || !RoadVehicle::From(u)->IsFrontEngine()) {
+				if (u == nullptr || u->type != VEH_ROAD || !RoadVehicle::From(u)->IsFirstEngine()) {
 					delete v;
 				}
 			}
@@ -2986,7 +2986,7 @@ bool AfterLoadGame()
 		bool roadside = _settings_game.vehicle.road_side == 1;
 		std::vector<uint> skip_frames;
 		for (RoadVehicle *v : RoadVehicle::Iterate()) {
-			if (!v->IsFrontEngine()) continue;
+			if (!v->IsFirstEngine()) continue;
 			skip_frames.clear();
 			TileIndex prev_tile = v->tile;
 			uint prev_tile_skip = 0;

@@ -1,3 +1,7 @@
+# OpenTTD Reversing Trains
+This is an openttd fork to experiment with trains that are not flipping magically but actually reversing.
+Original OpenTTD Readme below:
+
 # OpenTTD
 
 ## Table of contents

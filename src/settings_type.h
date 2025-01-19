@@ -112,6 +112,7 @@ struct DifficultySettings {
 	uint8_t quantity_sea_lakes;               ///< the amount of seas/lakes
 	bool   economy;                          ///< how volatile is the economy
 	bool   line_reverse_mode;                ///< reversing at stations or not
+	bool enable_train_reverse;		  			///< reversing behavior, original or realistic
 	bool   disasters;                        ///< are disasters enabled
 	uint8_t town_council_tolerance;           ///< minimum required town ratings to be allowed to demolish stuff
 	bool   infinite_money;                   ///< whether spending money despite negative balance is allowed

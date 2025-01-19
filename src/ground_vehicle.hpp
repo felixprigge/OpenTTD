@@ -41,7 +41,7 @@ struct GroundVehicleCache {
 
 	/* Cached NewGRF values, recalculated on load and each time a vehicle is added to/removed from the consist. */
 	uint16_t cached_total_length;     ///< Length of the whole vehicle (valid only for the first engine).
-	EngineID first_engine;          ///< Cached EngineID of the front vehicle. INVALID_ENGINE for the front vehicle itself.
+	EngineID first_engine;          ///< Cached EngineID of the first vehicle. INVALID_ENGINE for the first vehicle itself.
 	uint8_t cached_veh_length;        ///< Length of this vehicle in units of 1/VEHICLE_LENGTH of normal length. It is cached because this can be set by a callback.
 
 	/* Cached UI information. */
@@ -246,14 +246,14 @@ struct GroundVehicle : public SpecializedVehicle<T, Type> {
 	}
 
 	/**
-	 * Set front engine state.
+	 * Set first engine state.
 	 */
-	inline void SetFrontEngine() { SetBit(this->subtype, GVSF_FRONT); }
+	inline void SetFirstEngine() { SetBit(this->subtype, GVSF_FIRST); }
 
 	/**
-	 * Remove the front engine state.
+	 * Remove the first engine state.
 	 */
-	inline void ClearFrontEngine() { ClrBit(this->subtype, GVSF_FRONT); }
+	inline void ClearFirstEngine() { ClrBit(this->subtype, GVSF_FIRST); }
 
 	/**
 	 * Set a vehicle to be an articulated part.
